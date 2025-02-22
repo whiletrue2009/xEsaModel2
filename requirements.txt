@@ -1,0 +1,38 @@
+# 核心依赖
+torch==2.6.0
+transformers==4.33.3
+tokenizers==0.13.3
+accelerate==1.4.0
+peft==0.6.0
+trl==0.7.6
+llmtuner==0.3.0
+datasets==3.3.2
+
+# 数据处理和工具
+scipy==1.15.2
+numpy==1.26.4
+pandas==2.2.3
+sentencepiece==0.2.0
+protobuf==5.29.3
+tiktoken==0.9.0
+jieba==0.42.1
+rouge-chinese==1.0.3
+nltk==3.9.1
+
+# Web 服务和 API
+uvicorn==0.34.0
+fastapi==0.115.8
+pydantic==2.10.6
+sse-starlette==2.2.1
+gradio==3.50.2
+
+# 工具和辅助包
+matplotlib==3.10.0
+tyro==0.9.16
+PyYAML==6.0.2
+safetensors==0.5.2
+huggingface-hub==0.29.1
+filelock==3.17.0
+packaging==24.2
+tqdm==4.67.1
+regex==2024.11.6 
