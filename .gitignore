@@ -61,10 +61,11 @@ results/
 
 # Large files
 *.csv
-
+*.json
 !config/*.json
 *.txt
 !requirements.txt
+!requirements_gpu.txt
 *.log
 *.gz
 *.zip
@@ -73,7 +74,7 @@ results/
 
 # Project specific
 models/
-
+data/
 logs/
 temp/
 cache/
