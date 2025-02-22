@@ -1,0 +1,58 @@
+model_name_or_path: "deepseek-ai/deepseek-coder-1.3b-base"
+teacher_model_name_or_path: "deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B"
+
+model_type: "AutoModelForCausalLM"
+trust_remote_code: true
+use_auth_token: false
+
+dataset:
+  type: "text"
+  format: "alpaca"
+  file_name: "data/train/train.json"
+
+data_processing:
+  num_workers: 2
+  batch_size: 2
+  max_seq_length: 1024
+  preprocessing_num_workers: 2
+
+training:
+  num_train_epochs: 3
+  learning_rate: 2e-4
+  lr_scheduler_type: "cosine"
+  warmup_ratio: 0.03
+  weight_decay: 0.01
+  max_grad_norm: 1.0
+  gradient_accumulation_steps: 8
+  logging_steps: 10
+  save_steps: 100
+  eval_steps: 100
+  save_total_limit: 2
+  output_dir: "outputs/distill"
+  overwrite_output_dir: true
+  ddp_find_unused_parameters: false
+  gradient_checkpointing: true
+  torch_compile: false
+  fp16: false
+  bf16: false
+
+distillation:
+  temperature: 2.0
+  alpha_ce: 0.5
+  alpha_kl: 0.5
+  alpha_hidden: 0.0
+  alpha_cos: 0.0
+  kl_loss_type: "kl"
+  hidden_loss_type: "mse"
+  hidden_mapping_type: "linear"
+  hidden_mapping_layers: []
+
+lora:
+  use_lora: false
+
+quantization:
+  load_in_8bit: false
+  load_in_4bit: false
+
+device_map: "mps"
+use_mps_device: true 
