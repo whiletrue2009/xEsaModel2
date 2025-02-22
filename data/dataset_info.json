@@ -1,0 +1,18 @@
+{
+    "train/train.json": {
+        "file_name": "train/train.json",
+        "val_file": null,
+        "prompt_template": "alpaca",
+        "system_prompt": "",
+        "dataset_format": "alpaca",
+        "val_size": 0.1
+    },
+    "train/train_augmented.json": {
+        "file_name": "train/train_augmented.json",
+        "val_file": null,
+        "prompt_template": "alpaca",
+        "system_prompt": "",
+        "dataset_format": "alpaca",
+        "val_size": 0.1
+    }
+} 

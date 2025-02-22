@@ -61,7 +61,7 @@ results/
 
 # Large files
 *.csv
-*.json
+
 !config/*.json
 *.txt
 !requirements.txt
@@ -73,7 +73,7 @@ results/
 
 # Project specific
 models/
-data/
+
 logs/
 temp/
 cache/
