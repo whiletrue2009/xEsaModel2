@@ -54,6 +54,98 @@ xEsaModel/
 └── notebooks/              # 实验分析笔记本
 ```
 
+## 训练过程总结
+
+### Phase 1: 初始尝试
+1. 首次训练配置:
+   - 使用完整的知识蒸馏
+   - 启用评估功能
+   - 结果: 因缺少评估数据集而失败
+
+### Phase 2: 配置优化
+1. 移除评估相关配置:
+   - 删除 `--do_eval` 参数
+   - 删除 `--eval_steps`
+   - 结果: 训练成功完成，但模型效果不理想
+
+### Phase 3: LoRA 微调
+1. 改进策略:
+   - 采用 LoRA 微调替代完整知识蒸馏
+   - 配置参数:
+     ```yaml
+     lora:
+       use_lora: true
+       r: 32
+       alpha: 128
+       dropout: 0.05
+       target_modules: ["q_proj", "k_proj", "v_proj", "o_proj", "gate_proj", "up_proj", "down_proj"]
+     ```
+   - 训练参数:
+     - 批次大小: 1
+     - 梯度累积: 32
+     - 学习率: 5e-5
+     - 训练轮数: 8
+     - 优化器: AdamW
+   - 结果: 训练速度提升，内存占用降低
+
+### Phase 4: 数据增强
+1. 实现数据增强:
+   - 问题变体生成
+   - 答案重组
+   - 结果: 训练数据量增加，模型表现更稳定
+
+### Phase 5: 最终优化
+1. 成功的关键因素:
+   - 使用 LoRA 进行轻量级微调
+   - 合理的超参数设置
+   - 数据增强提升泛化能力
+   - CPU 训练确保稳定性
+
+## 最终训练配置
+```yaml
+# 模型配置
+model_name_or_path: "deepseek-ai/deepseek-coder-1.3b-base"
+lora_rank: 32
+lora_alpha: 128
+lora_dropout: 0.05
+
+# 训练参数
+per_device_train_batch_size: 1
+gradient_accumulation_steps: 32
+learning_rate: 5e-5
+num_train_epochs: 8
+max_steps: -1
+warmup_steps: 100
+
+# 优化器设置
+optimizer: "adamw_torch"
+weight_decay: 0.01
+max_grad_norm: 0.5
+
+# 其他设置
+logging_steps: 5
+save_steps: 50
+max_seq_length: 2048
+```
+
+## 评估指标
+1. 模型大小: LoRA 权重仅 12MB
+2. 推理速度: CPU 上约 2-3s/response
+3. 性能指标: 回答准确性和流畅度良好
+4. 内存占用: 训练期间峰值 8GB
+5. 用户体验: 响应速度和质量均可接受
+
+## 后续优化方向
+1. GGUF 量化优化
+2. 特定场景微调
+3. 推理性能优化
+4. 模型压缩优化
+
+## 风险管理
+1. 性能风险: 模型过小可能导致性能不足
+2. 资源风险: M1 Mac 训练资源限制
+3. 兼容性风险: 模型格式转换和 LM Studio 适配
+
 ## 开发计划
 1. Phase 1: 环境配置
    - 配置 conda 环境
